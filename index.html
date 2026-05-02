@@ -1,0 +1,2669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Le Clos du Bourg — Bar · Restaurant · Épicerie · Livraison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #C75A2A;
+    --orange-dark: #A8481E;
+    --orange-soft: #E08456;
+    --cream: #FAF6EE;
+    --cream-dark: #F0E8D8;
+    --ink: #1C1A17;
+    --ink-soft: #44403B;
+    --muted: #8A847B;
+    --border: rgba(28,26,23,0.12);
+    --white: #FFFFFF;
+    --green: #2D7D3F;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  img { display: block; max-width: 100%; height: auto; }
+
+  /* HEADER */
+  header.site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.4rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(250,246,238,0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+
+  header.site-header.transparent {
+    background: transparent;
+    border-bottom-color: transparent;
+  }
+
+  header.site-header.transparent .logo,
+  header.site-header.transparent .nav-link {
+    color: var(--white);
+  }
+
+  header.site-header.transparent .logo-mark {
+    border-color: var(--white);
+    color: var(--white);
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.45rem;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    transition: color 0.3s;
+  }
+
+  .logo-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--orange);
+    color: var(--orange);
+    display: grid;
+    place-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Cormorant Garamond', serif;
+    transition: all 0.3s;
+  }
+
+  nav.main-nav {
+    display: flex;
+    gap: 2.4rem;
+    align-items: center;
+  }
+
+  .nav-link {
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.3s;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 0;
+    height: 1.5px;
+    background: var(--orange);
+    transition: width 0.4s ease;
+  }
+
+  .nav-link:hover { color: var(--orange); }
+  .nav-link:hover::after,
+  .nav-link.active::after { width: 100%; }
+  .nav-link.active { color: var(--orange); }
+
+  /* Cart badge in header */
+  .cart-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--orange);
+    color: var(--white);
+    border: 1.5px solid var(--orange);
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .cart-badge:hover { background: var(--orange-dark); border-color: var(--orange-dark); }
+  .cart-badge .count {
+    background: var(--white);
+    color: var(--orange);
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  .cart-badge.empty { display: none; }
+
+  .menu-toggle { display: none; }
+
+  /* PAGES */
+  .page {
+    display: none;
+    animation: fadeIn 0.6s ease;
+  }
+  .page.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 640px;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?w=2000&q=80');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(28,26,23,0.4) 0%, rgba(28,26,23,0.55) 100%);
+  }
+
+  .hero-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--white);
+    padding: 2rem;
+    z-index: 2;
+  }
+
+  .hero-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .hero-logo .amp {
+    display: block;
+    font-size: 0.45em;
+    color: var(--orange-soft);
+    font-style: italic;
+    margin: 0.4rem 0;
+    text-transform: none;
+    letter-spacing: 0.1em;
+  }
+
+  .hero-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-top: 1rem;
+    opacity: 0.92;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--white);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    text-align: center;
+  }
+
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 32px;
+    background: var(--white);
+    margin: 0.6rem auto 0;
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 0.7; }
+    50% { transform: scaleY(0.4); opacity: 0.3; }
+  }
+
+  /* ============ INTRO ============ */
+  .intro {
+    padding: 7rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .intro-eyebrow,
+  .feature-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .intro h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    line-height: 1.3;
+    letter-spacing: 0.005em;
+    color: var(--ink);
+  }
+
+  /* ============ FEATURE ============ */
+  .feature {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+
+  .feature-image {
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    min-height: 500px;
+  }
+
+  .feature-text {
+    padding: 6rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--cream);
+  }
+
+  .feature.reverse .feature-image { order: 2; }
+  .feature.reverse .feature-text { order: 1; }
+
+  .feature.dark .feature-text {
+    background: var(--ink);
+    color: var(--white);
+  }
+  .feature.dark .feature-text .feature-eyebrow { color: var(--orange-soft); }
+
+  .feature-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: 0.005em;
+    margin-bottom: 1.8rem;
+    color: inherit;
+  }
+
+  .feature-text p {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    margin-bottom: 1.2rem;
+    max-width: 480px;
+  }
+
+  .feature.dark .feature-text p { color: rgba(255,255,255,0.78); }
+  .feature-text p strong { color: inherit; font-weight: 600; }
+
+  /* CTA BUTTON */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: transparent;
+    color: var(--orange);
+    border: 1.5px solid var(--orange);
+    padding: 1rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+    margin-top: 2rem;
+    text-decoration: none;
+    align-self: flex-start;
+  }
+
+  .btn:hover {
+    background: var(--orange);
+    color: var(--white);
+    gap: 1.2rem;
+  }
+
+  .btn::after { content: '→'; font-size: 1rem; }
+
+  .btn-light { color: var(--white); border-color: var(--white); }
+  .btn-light:hover { background: var(--white); color: var(--ink); }
+
+  .btn-solid {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--orange);
+  }
+  .btn-solid:hover {
+    background: var(--orange-dark);
+    border-color: var(--orange-dark);
+  }
+
+  /* ============ EVENTS BANNER ============ */
+  .events-banner {
+    position: relative;
+    padding: 8rem 3rem;
+    text-align: center;
+    color: var(--white);
+    background-image:
+      linear-gradient(rgba(28,26,23,0.6), rgba(28,26,23,0.6)),
+      url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2000&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .events-banner .feature-eyebrow {
+    color: var(--orange-soft);
+    margin-bottom: 1.5rem;
+  }
+
+  .events-banner h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .events-banner p {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    opacity: 0.85;
+  }
+
+  .events-banner .btn {
+    margin-top: 0;
+    align-self: center;
+  }
+
+  /* ============ GALLERY ============ */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--cream-dark);
+  }
+
+  .gallery-item {
+    aspect-ratio: 1/1;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    transition: all 0.6s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .gallery-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(28,26,23,0);
+    transition: background 0.4s;
+  }
+
+  .gallery-item:hover::after { background: rgba(199,90,42,0.25); }
+  .gallery-item:hover { transform: scale(1.02); z-index: 2; }
+
+  /* ============ SOCIAL ============ */
+  .social-section {
+    padding: 6rem 3rem;
+    text-align: center;
+    background: var(--cream);
+  }
+
+  .social-section .feature-eyebrow { margin-bottom: 1rem; }
+
+  .social-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    color: var(--ink);
+  }
+
+  .social-section h2 a {
+    color: var(--orange);
+    text-decoration: none;
+    font-style: italic;
+    border-bottom: 1px solid transparent;
+    transition: border 0.3s;
+  }
+
+  .social-section h2 a:hover { border-bottom-color: var(--orange); }
+
+  /* ============ PAGE HEADERS ============ */
+  .page-header {
+    position: relative;
+    height: 60vh;
+    min-height: 420px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    text-align: center;
+    padding-top: 5rem;
+  }
+
+  .page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(28,26,23,0.4) 0%, rgba(28,26,23,0.6) 100%);
+    z-index: 1;
+  }
+
+  .page-header.epicerie { background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=2000&q=80') center/cover; }
+  .page-header.restaurant { background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=2000&q=80') center/cover; }
+  .page-header.animation { background: url('https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=2000&q=80') center/cover; }
+  .page-header.commande { background: url('https://images.unsplash.com/photo-1481833761820-0509d3217039?w=2000&q=80') center/cover; }
+
+  .page-header-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 2rem;
+  }
+
+  .page-header-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--orange-soft);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-header p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    opacity: 0.92;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  /* ============ ÉPICERIE ============ */
+  .grocery-intro {
+    padding: 7rem 3rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .grocery-intro h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .grocery-intro p {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--ink-soft);
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem 3rem 6rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .category {
+    background: var(--white);
+    overflow: hidden;
+    transition: all 0.5s;
+    cursor: pointer;
+    border: 1px solid var(--border);
+  }
+
+  .category:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -20px rgba(0,0,0,0.18);
+  }
+
+  .category-img {
+    aspect-ratio: 4/3;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .category-body { padding: 1.8rem 1.6rem 2rem; }
+
+  .category-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 1.1;
+    margin-bottom: 0.6rem;
+  }
+
+  .category-body p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ============ MENU RESTAURANT ============ */
+  .menu-section {
+    padding: 7rem 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .menu-block { margin-bottom: 5rem; }
+
+  .menu-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .menu-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+  }
+
+  .menu-items { display: grid; gap: 2rem; }
+
+  .menu-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: baseline;
+    padding-bottom: 1.8rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .menu-item-info h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.35rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .menu-item-info p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .menu-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--orange);
+  }
+
+  .menu-price small {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-left: 0.2rem;
+  }
+
+  /* ============ RESERVATION FORM (restaurant) ============ */
+  .reservation-section {
+    background: var(--cream-dark);
+    padding: 6rem 3rem;
+  }
+
+  .reservation-form {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .reservation-form-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .reservation-form-header .feature-eyebrow { color: var(--orange); }
+
+  .reservation-form-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .reservation-form-header p {
+    color: var(--ink-soft);
+    font-size: 1rem;
+  }
+
+  /* light theme form fields */
+  .light-form .form-field input,
+  .light-form .form-field select,
+  .light-form .form-field textarea {
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--ink);
+  }
+
+  .light-form .form-field input::placeholder,
+  .light-form .form-field textarea::placeholder { color: var(--muted); }
+
+  .light-form .form-field label {
+    color: var(--orange);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .reservation-contact {
+    background: var(--cream);
+    padding: 4rem 3rem;
+    text-align: center;
+  }
+
+  .reservation-contact .feature-eyebrow { color: var(--orange); }
+
+  .reservation-contact h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .reservation-contact .phone {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--orange);
+    margin: 0.5rem 0;
+  }
+
+  .reservation-contact p {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+
+  /* ============ ANIMATION EVENTS ============ */
+  .events-list-section {
+    padding: 7rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .event-card {
+    display: grid;
+    grid-template-columns: 320px 1fr auto;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: all 0.4s;
+    align-items: stretch;
+  }
+
+  .event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px -20px rgba(0,0,0,0.15);
+  }
+
+  .event-card-img {
+    background-size: cover;
+    background-position: center;
+    min-height: 240px;
+  }
+
+  .event-card-body {
+    padding: 2.2rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .event-card-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .event-card-meta .date { color: var(--orange); font-weight: 600; }
+
+  .event-card-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.85rem;
+    line-height: 1.15;
+    margin-bottom: 0.8rem;
+  }
+
+  .event-card-body p {
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    max-width: 500px;
+  }
+
+  .event-card-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--orange);
+    border: 1px solid var(--orange);
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+    font-weight: 600;
+    align-self: flex-start;
+  }
+
+  .event-card-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2.5rem;
+  }
+
+  .event-reserve-btn {
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 1rem 1.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .event-reserve-btn:hover {
+    background: var(--orange-dark);
+    transform: translateY(-1px);
+  }
+
+  /* ============ COMMANDE - ORDER PAGE ============ */
+  .delivery-info {
+    padding: 6rem 3rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .delivery-info h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 4rem;
+  }
+
+  .delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+  }
+
+  .delivery-step { text-align: center; }
+
+  .delivery-step .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--orange);
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  .delivery-step h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .delivery-step p {
+    color: var(--ink-soft);
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  /* Catalog + cart layout */
+  .catalog-section {
+    padding: 5rem 3rem 6rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .catalog-section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .catalog-section-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .category-tabs {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1px;
+  }
+
+  .category-tab {
+    padding: 1rem 0;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.3s;
+    white-space: nowrap;
+  }
+
+  .category-tab:hover { color: var(--ink); }
+  .category-tab.active { color: var(--orange); }
+  .category-tab.active::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -1px;
+    width: 100%;
+    height: 2px;
+    background: var(--orange);
+  }
+
+  .catalog-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s;
+  }
+
+  .product-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 12px 30px -16px rgba(199,90,42,0.25);
+  }
+
+  .product-img {
+    aspect-ratio: 4/3;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--cream-dark);
+  }
+
+  .product-body {
+    padding: 1.3rem 1.4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .product-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.15;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+  }
+
+  .product-body .desc {
+    font-size: 0.84rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  .product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    gap: 0.8rem;
+  }
+
+  .product-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--orange);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .product-price small {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-left: 0.15rem;
+  }
+
+  .add-btn {
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    padding: 0.65rem 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .add-btn:hover { background: var(--orange); }
+
+  .qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--cream-dark);
+    border-radius: 999px;
+    padding: 0.25rem;
+  }
+
+  .qty-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: var(--white);
+    color: var(--orange);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+    transition: all 0.2s;
+    line-height: 1;
+  }
+
+  .qty-btn:hover { background: var(--orange); color: var(--white); }
+
+  .qty-display {
+    min-width: 28px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+
+  /* CART SIDEBAR */
+  .cart-sidebar {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 2rem 1.8rem;
+    position: sticky;
+    top: 6.5rem;
+    align-self: start;
+  }
+
+  .cart-sidebar h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .cart-sidebar h3 .cart-count {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .cart-empty {
+    color: var(--muted);
+    font-style: italic;
+    text-align: center;
+    padding: 2rem 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+  }
+
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.8rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .cart-item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+  }
+
+  .cart-item-meta {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .cart-item-actions {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.4rem;
+  }
+
+  .cart-item-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    color: var(--orange);
+    font-size: 1.05rem;
+    white-space: nowrap;
+  }
+
+  .cart-item-remove {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 0.72rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .cart-item-remove:hover { color: var(--orange); }
+
+  .cart-totals {
+    padding-top: 1rem;
+    border-top: 2px solid var(--ink);
+  }
+
+  .cart-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+
+  .cart-row.grand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .cart-row.grand .price { color: var(--orange); }
+
+  .cart-checkout-btn {
+    width: 100%;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: background 0.3s;
+  }
+
+  .cart-checkout-btn:hover:not(:disabled) { background: var(--orange-dark); }
+  .cart-checkout-btn:disabled {
+    background: var(--muted);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  /* CHECKOUT FORM */
+  .order-form-wrap {
+    background: var(--ink);
+    color: var(--white);
+    padding: 6rem 3rem;
+  }
+
+  .order-form { max-width: 720px; margin: 0 auto; }
+
+  .order-form .feature-eyebrow {
+    color: var(--orange-soft);
+    text-align: center;
+    display: block;
+  }
+
+  .order-form h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .order-form > p {
+    text-align: center;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 3rem;
+  }
+
+  .order-summary-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 1.5rem 1.8rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+  }
+
+  .order-summary-box h4 {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--orange-soft);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .order-summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  .order-summary-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.85);
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .order-summary-list li:last-child { border-bottom: none; }
+  .order-summary-list li .qty { color: var(--orange-soft); margin-right: 0.5rem; }
+  .order-summary-list li .price-col { color: var(--orange-soft); white-space: nowrap; margin-left: 1rem; }
+
+  .order-summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.8rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+
+  .order-summary-total .price { color: var(--orange); }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .form-field { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-field.full { grid-column: 1 / -1; }
+
+  .form-field label {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--orange-soft);
+    font-weight: 600;
+  }
+
+  .form-field input,
+  .form-field textarea,
+  .form-field select {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 1rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--white);
+    transition: border 0.3s, background 0.3s;
+  }
+
+  .form-field input::placeholder,
+  .form-field textarea::placeholder { color: rgba(255,255,255,0.4); }
+
+  .form-field input:focus,
+  .form-field textarea:focus,
+  .form-field select:focus {
+    outline: none;
+    border-color: var(--orange);
+    background: rgba(255,255,255,0.1);
+  }
+
+  .form-field select { color: var(--white); }
+  .form-field select option { background: var(--ink); }
+
+  .form-field textarea { resize: vertical; min-height: 90px; }
+
+  .form-submit {
+    width: 100%;
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    padding: 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: background 0.3s;
+  }
+
+  .form-submit:hover:not(:disabled) { background: var(--orange-dark); }
+  .form-submit:disabled { background: var(--muted); cursor: not-allowed; opacity: 0.6; }
+
+  /* ============ MODAL ============ */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(28,26,23,0.75);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-backdrop.open {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .modal {
+    background: var(--cream);
+    max-width: 540px;
+    width: 100%;
+    padding: 3rem 2.5rem 2.5rem;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalIn 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: var(--muted);
+    width: 36px; height: 36px;
+    display: grid; place-items: center;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+
+  .modal-close:hover { color: var(--orange); }
+
+  .modal .feature-eyebrow {
+    text-align: center;
+    color: var(--orange);
+  }
+
+  .modal h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .modal-event-summary {
+    background: var(--white);
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.8rem;
+    border-left: 3px solid var(--orange);
+  }
+
+  .modal-event-summary .ev-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  .modal-event-summary .ev-date {
+    font-size: 0.8rem;
+    color: var(--orange);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--cream);
+    color: var(--ink);
+    padding: 5rem 3rem 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .footer-brand h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+    color: var(--orange);
+  }
+
+  .footer-brand p {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  footer h4 {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+  }
+
+  footer ul { list-style: none; }
+  footer ul li {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin-bottom: 0.5rem;
+  }
+
+  footer ul li.day { display: flex; justify-content: space-between; }
+
+  footer .footer-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition: color 0.3s;
+  }
+  footer .footer-link:hover { color: var(--orange); }
+
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--ink);
+    color: var(--white);
+    padding: 1rem 2rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    z-index: 300;
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-left: 3px solid var(--orange);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.success { border-left-color: var(--green); }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .feature { grid-template-columns: 1fr; }
+    .feature.reverse .feature-image { order: 1; }
+    .feature.reverse .feature-text { order: 2; }
+    .feature-text { padding: 4rem 2.5rem; }
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    .delivery-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .event-card {
+      grid-template-columns: 1fr;
+    }
+    .event-card-body { padding: 2rem 2rem 1rem; }
+    .event-card-cta { padding: 0 2rem 2rem; justify-content: flex-start; }
+    .events-banner { background-attachment: scroll; }
+    .catalog-layout { grid-template-columns: 1fr; }
+    .cart-sidebar {
+      position: static;
+      order: 2;
+    }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    header.site-header { padding: 1rem 1.2rem; }
+    nav.main-nav {
+      position: fixed;
+      top: 0; right: 0;
+      height: 100vh;
+      width: 280px;
+      background: var(--cream);
+      flex-direction: column;
+      padding: 5rem 2rem 2rem;
+      gap: 1.5rem;
+      align-items: flex-start;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+      z-index: 99;
+    }
+    nav.main-nav.open { transform: translateX(0); }
+    .nav-link { font-size: 1rem; color: var(--ink) !important; }
+    header.site-header.transparent .nav-link { color: var(--ink) !important; }
+    .cart-badge { padding: 0.4rem 0.8rem; font-size: 0.7rem; }
+
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 101;
+      padding: 0.5rem;
+    }
+    .menu-toggle span {
+      width: 24px;
+      height: 2px;
+      background: var(--ink);
+      transition: all 0.3s;
+    }
+    header.site-header.transparent .menu-toggle span { background: var(--white); }
+    .menu-toggle.open span { background: var(--ink) !important; }
+    .menu-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .menu-toggle.open span:nth-child(2) { opacity: 0; }
+    .menu-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .intro, .grocery-intro, .menu-section, .events-list-section, .delivery-info, .order-form-wrap, .events-banner, .catalog-section, .reservation-section, .reservation-contact {
+      padding-left: 1.2rem;
+      padding-right: 1.2rem;
+    }
+    .intro, .grocery-intro, .menu-section, .events-list-section, .delivery-info, .reservation-section {
+      padding-top: 4.5rem;
+      padding-bottom: 4.5rem;
+    }
+    .order-form-wrap, .events-banner { padding-top: 5rem; padding-bottom: 5rem; }
+    .feature-text { padding: 4rem 1.5rem; }
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+    .categories-grid { grid-template-columns: 1fr; padding: 1rem 1.2rem 4rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+    .menu-item { grid-template-columns: 1fr; gap: 0.4rem; }
+    .menu-price { justify-self: start; }
+    .product-grid { grid-template-columns: 1fr; }
+    .category-tabs { gap: 1.5rem; }
+    .category-tab { font-size: 0.75rem; }
+    .modal { padding: 2.5rem 1.5rem 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header transparent" id="siteHeader">
+  <div class="logo" onclick="showPage('accueil')">
+    <div class="logo-mark">C</div>
+    <div>Le Clos du Bourg</div>
+  </div>
+  <nav class="main-nav" id="mainNav">
+    <button class="nav-link active" data-page="accueil" onclick="showPage('accueil')">Accueil</button>
+    <button class="nav-link" data-page="epicerie" onclick="showPage('epicerie')">Épicerie</button>
+    <button class="nav-link" data-page="restaurant" onclick="showPage('restaurant')">Restaurant</button>
+    <button class="nav-link" data-page="animation" onclick="showPage('animation')">Animation</button>
+    <button class="nav-link" data-page="commande" onclick="showPage('commande')">Commander</button>
+    <button class="cart-badge empty" id="cartBadge" onclick="showPage('commande')">
+      Panier <span class="count" id="cartBadgeCount">0</span>
+    </button>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ====================== ACCUEIL ====================== -->
+<main class="page active" id="page-accueil">
+
+  <section class="hero">
+    <div class="hero-image"></div>
+    <div class="hero-content">
+      <h1 class="hero-logo">
+        Le Clos
+        <span class="amp">— du —</span>
+        Bourg
+      </h1>
+      <div class="hero-tagline">Bar · Restaurant · Épicerie · Livraison</div>
+    </div>
+    <div class="hero-scroll">Découvrir</div>
+  </section>
+
+  <section class="intro">
+    <div class="intro-eyebrow">— La maison —</div>
+    <h2>Une maison de village authentique, au cœur du bourg, qui réunit sous un même toit ce qui rassemble&#8239;: la table, le comptoir et le bon produit.</h2>
+  </section>
+
+  <section class="feature">
+    <div class="feature-image" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=1400&q=80');"></div>
+    <div class="feature-text">
+      <div class="feature-eyebrow">— Notre épicerie —</div>
+      <h2>Le bon produit,<br/>tous les jours.</h2>
+      <p>Pain frais du matin, fromages affinés à la coupe, vins de vignerons, légumes du maraîcher d'à côté. Une épicerie de village comme on n'en trouve plus, qui travaille avec dix-sept producteurs locaux dans un rayon de cinquante kilomètres.</p>
+      <p>Le quotidien, mais bien fait. Le rare, à portée de main.</p>
+      <button class="btn" onclick="showPage('epicerie')">Découvrir</button>
+    </div>
+  </section>
+
+  <section class="feature reverse dark">
+    <div class="feature-image" style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80');"></div>
+    <div class="feature-text">
+      <div class="feature-eyebrow">— Le restaurant —</div>
+      <h2>Une cuisine<br/>du marché.</h2>
+      <p>Une carte courte qui change avec la saison, des produits choisis chaque matin, et une équipe en cuisine qui aime ce qu'elle fait. La salle est chaleureuse, la cheminée fonctionne en hiver et la cour s'ouvre dès les beaux jours.</p>
+      <p>Pour un déjeuner d'affaires, un dîner entre amis, ou un repas en famille le dimanche.</p>
+      <button class="btn btn-light" onclick="showPage('restaurant')">Voir la carte</button>
+    </div>
+  </section>
+
+  <section class="events-banner">
+    <div class="feature-eyebrow">— Nos prochains événements —</div>
+    <h2>Concerts, dégustations,<br/>marchés nocturnes</h2>
+    <p>Au Clos, on aime les prétextes pour se retrouver. Concerts au comptoir, soirées vigneron, ateliers, marchés et bals de village rythment la vie de la maison.</p>
+    <button class="btn btn-light" onclick="showPage('animation')">Voir l'agenda</button>
+  </section>
+
+  <section class="feature">
+    <div class="feature-image" style="background-image: url('https://images.unsplash.com/photo-1481833761820-0509d3217039?w=1400&q=80');"></div>
+    <div class="feature-text">
+      <div class="feature-eyebrow">— Service de livraison —</div>
+      <h2>Le bourg jusqu'à<br/>chez vous.</h2>
+      <p>Pas envie de descendre, ou pas le temps&#8239;? Nous livrons votre commande d'épicerie, vos plats du restaurant ou votre apéro improvisé dans un rayon de 15&#8239;km autour du village.</p>
+      <p><strong>Du mardi au samedi, midi et soir.</strong> Livraison gratuite dès 30&#8239;€.</p>
+      <button class="btn btn-solid" onclick="showPage('commande')">Commander</button>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80');"></div>
+    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1452195100486-9cc805987862?w=800&q=80');"></div>
+    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80');"></div>
+    <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80');"></div>
+  </section>
+
+  <section class="social-section">
+    <div class="feature-eyebrow">— Suivez la maison —</div>
+    <h2>Retrouvez l'actualité du Clos sur <a href="#">Instagram</a> &amp; <a href="#">Facebook</a></h2>
+  </section>
+
+</main>
+
+<!-- ====================== ÉPICERIE ====================== -->
+<main class="page" id="page-epicerie">
+
+  <section class="page-header epicerie">
+    <div class="page-header-content">
+      <div class="page-header-eyebrow">— L'épicerie —</div>
+      <h1>L'Épicerie</h1>
+      <p>Un comptoir qui sent le café fraîchement moulu, des étagères qui débordent de bonnes choses, et derrière, quelqu'un qui connaît votre prénom.</p>
+    </div>
+  </section>
+
+  <section class="grocery-intro">
+    <div class="feature-eyebrow">— Notre engagement —</div>
+    <h2>Du producteur à votre table,<br/>sans détour.</h2>
+    <p>Nous travaillons avec dix-sept producteurs dans un rayon de cinquante kilomètres autour du bourg. Pour le reste — l'huile d'olive de Provence, le café de torréfacteur, le chocolat de l'artisan — nous choisissons à la main, en privilégiant toujours le geste juste et la maison qui le porte.</p>
+  </section>
+
+  <section class="categories-grid">
+    <div class="category">
+      <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80');"></div>
+      <div class="category-body">
+        <h3>Pain & Viennoiseries</h3>
+        <p>Cuisson du jour au levain naturel, livré à 7h chaque matin par le boulanger de Saint-Marcel.</p>
+      </div>
+    </div>
+    <div class="category">
+      <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1452195100486-9cc805987862?w=800&q=80');"></div>
+      <div class="category-body">
+        <h3>Fromages & Crémerie</h3>
+        <p>Une trentaine de fromages affinés à la coupe, beurre baratté, œufs de plein air.</p>
+      </div>
+    </div>
+    <div class="category">
+      <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1542528180-a1208c5169a5?w=800&q=80');"></div>
+      <div class="category-body">
+        <h3>Charcuterie & Boucherie</h3>
+        <p>Saucisson sec, pâté de campagne, jambon de pays. Viande de la Ferme du Plateau.</p>
+      </div>
+    </div>
+    <div class="category">
+      <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80');"></div>
+      <div class="category-body">
+        <h3>Fruits & Légumes</h3>
+        <p>Maraîchage local de saison, livré trois fois par semaine. Tomates l'été, courges l'hiver.</p>
+      </div>
+    </div>
+    <div class="category">
+      <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80');"></div>
+      <div class="category-body">
+        <h3>Cave & Spiritueux</h3>
+        <p>Une centaine de références&#8239;: vins nature, classiques, bières artisanales, apéritifs maison.</p>
+      </div>
+    </div>
+    <div class="category">
+      <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1481833761820-0509d3217039?w=800&q=80');"></div>
+      <div class="category-body">
+        <h3>Épicerie fine</h3>
+        <p>Huiles d'olive, miels, confitures, biscuits, chocolats, thés et cafés en grain.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature dark">
+    <div class="feature-image" style="background-image: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1400&q=80');"></div>
+    <div class="feature-text">
+      <div class="feature-eyebrow">— Nos producteurs —</div>
+      <h2>Les visages derrière<br/>les étiquettes.</h2>
+      <p>La Ferme du Plateau, le Domaine Verchère, la boulangerie de Saint-Marcel, Marie & Camille au maraîchage, la fromagerie de l'Alpe, les ruchers du Coteau&#8239;: nos producteurs sont nos voisins.</p>
+      <p>Quand vous achetez une bouteille ou une miche de pain chez nous, vous savez exactement d'où elle vient — et qui l'a faite.</p>
+      <button class="btn btn-light" onclick="showPage('commande')">Passer commande</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ====================== RESTAURANT ====================== -->
+<main class="page" id="page-restaurant">
+
+  <section class="page-header restaurant">
+    <div class="page-header-content">
+      <div class="page-header-eyebrow">— Le restaurant —</div>
+      <h1>Le Restaurant</h1>
+      <p>Une cuisine de saison, généreuse, au plus près du producteur. Le menu change avec le marché. La cheminée fonctionne en hiver.</p>
+    </div>
+  </section>
+
+  <section class="menu-section">
+
+    <div class="menu-block">
+      <div class="menu-header">
+        <div class="feature-eyebrow">— Pour commencer —</div>
+        <h2>Entrées</h2>
+      </div>
+      <div class="menu-items">
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Velouté de potimarron, huile de noisette</h3><p>cubes de pain grillé, copeaux de comté, persil plat</p></div>
+          <div class="menu-price">9<small>€</small></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Œuf parfait, champignons des bois</h3><p>jus de cresson, lard fumé du Plateau, croûtons à l'ail</p></div>
+          <div class="menu-price">12<small>€</small></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Terrine maison, pickles de saison</h3><p>cornichons aigres-doux, moutarde à l'ancienne, pain de campagne</p></div>
+          <div class="menu-price">11<small>€</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-block">
+      <div class="menu-header">
+        <div class="feature-eyebrow">— À partager ou non —</div>
+        <h2>Plats</h2>
+      </div>
+      <div class="menu-items">
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Bœuf de la Ferme du Plateau, jus court</h3><p>pommes grenailles fumées, jeunes légumes glacés au beurre</p></div>
+          <div class="menu-price">26<small>€</small></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Filet de truite, beurre noisette aux câpres</h3><p>poireaux braisés, pomme de terre écrasée à la fourchette</p></div>
+          <div class="menu-price">23<small>€</small></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Risotto de petit épeautre, courges & sauge</h3><p>parmesan vieux, huile de noix, noisettes torréfiées</p></div>
+          <div class="menu-price">19<small>€</small></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Volaille fermière en cocotte, pour deux</h3><p>champignons, oignons grelots, vin blanc, riz pilaf (45 min)</p></div>
+          <div class="menu-price">52<small>€</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-block">
+      <div class="menu-header">
+        <div class="feature-eyebrow">— Pour finir —</div>
+        <h2>Desserts & Fromages</h2>
+      </div>
+      <div class="menu-items">
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Tarte du jour aux fruits de saison</h3><p>pâte sablée pur beurre, crème fraîche d'Étrez</p></div>
+          <div class="menu-price">8<small>€</small></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Île flottante, caramel à la fleur de sel</h3><p>amandes effilées, crème anglaise vanille</p></div>
+          <div class="menu-price">8<small>€</small></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Plateau de fromages affinés</h3><p>cinq fromages à la coupe, confit de vin, pain aux noix</p></div>
+          <div class="menu-price">12<small>€</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-block">
+      <div class="menu-header">
+        <div class="feature-eyebrow">— Les formules —</div>
+        <h2>Midi & Soir</h2>
+      </div>
+      <div class="menu-items">
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Le déjeuner du marché</h3><p>entrée + plat + dessert · servi du mardi au vendredi midi</p></div>
+          <div class="menu-price">24<small>€</small></div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-info"><h3>Le menu du Clos</h3><p>entrée + plat + fromage + dessert · le soir et le week-end</p></div>
+          <div class="menu-price">42<small>€</small></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- RÉSERVATION -->
+  <section class="reservation-section">
+    <div class="reservation-form light-form">
+      <div class="reservation-form-header">
+        <div class="feature-eyebrow">— Réserver une table —</div>
+        <h2>Une table chez nous,<br/>quand vous voulez.</h2>
+        <p>Indiquez vos préférences ci-dessous et nous vous confirmons la réservation par téléphone dans la journée.</p>
+      </div>
+
+      <form id="reservationForm" onsubmit="handleReservation(event)">
+        <div class="form-row">
+          <div class="form-field">
+            <label>Date *</label>
+            <input type="date" id="resDate" required min="" />
+          </div>
+          <div class="form-field">
+            <label>Heure *</label>
+            <select id="resTime" required>
+              <option value="">— Choisir —</option>
+              <optgroup label="Déjeuner">
+                <option>12h00</option><option>12h30</option>
+                <option>13h00</option><option>13h30</option>
+              </optgroup>
+              <optgroup label="Dîner">
+                <option>19h30</option><option>20h00</option>
+                <option>20h30</option><option>21h00</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Nombre de couverts *</label>
+            <select id="resGuests" required>
+              <option value="">— Choisir —</option>
+              <option>1 personne</option>
+              <option>2 personnes</option>
+              <option>3 personnes</option>
+              <option>4 personnes</option>
+              <option>5 personnes</option>
+              <option>6 personnes</option>
+              <option>7 personnes</option>
+              <option>8 personnes</option>
+              <option>Plus de 8 (groupe)</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Salle</label>
+            <select id="resRoom">
+              <option>Indifférent</option>
+              <option>Salle principale</option>
+              <option>Près de la cheminée</option>
+              <option>En terrasse (selon météo)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label>Prénom & nom *</label>
+            <input type="text" id="resName" required placeholder="Jean Martin" />
+          </div>
+          <div class="form-field">
+            <label>Téléphone *</label>
+            <input type="tel" id="resPhone" required placeholder="06 12 34 56 78" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field full">
+            <label>E-mail</label>
+            <input type="email" id="resEmail" placeholder="jean@exemple.fr" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field full">
+            <label>Demande particulière (allergies, occasion…)</label>
+            <textarea id="resMessage" placeholder="Ex : anniversaire de Marie, intolérance au gluten…"></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="form-submit">Demander une réservation</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="reservation-contact">
+    <div class="feature-eyebrow">— Ou par téléphone —</div>
+    <h3>Vous préférez nous appeler&#8239;?</h3>
+    <div class="phone">04 75 00 00 00</div>
+    <p>Du mardi au dimanche, de 10h à 22h.</p>
+  </section>
+
+</main>
+
+<!-- ====================== ANIMATION ====================== -->
+<main class="page" id="page-animation">
+
+  <section class="page-header animation">
+    <div class="page-header-content">
+      <div class="page-header-eyebrow">— Le calendrier —</div>
+      <h1>Animations</h1>
+      <p>Concerts au comptoir, dégustations chez le vigneron, marché nocturne, soirées dansantes. Au Clos, on aime les prétextes pour se retrouver.</p>
+    </div>
+  </section>
+
+  <section class="events-list-section" id="eventsList">
+    <!-- Events rendered by JS -->
+  </section>
+
+</main>
+
+<!-- ====================== COMMANDE ====================== -->
+<main class="page" id="page-commande">
+
+  <section class="page-header commande">
+    <div class="page-header-content">
+      <div class="page-header-eyebrow">— Service de livraison —</div>
+      <h1>Commander</h1>
+      <p>Le bourg jusqu'à chez vous. Livraison du mardi au samedi dans un rayon de 15&#8239;km autour du village.</p>
+    </div>
+  </section>
+
+  <section class="delivery-info">
+    <div class="feature-eyebrow">— Comment ça marche —</div>
+    <h2>Trois étapes,<br/>et c'est livré.</h2>
+    <div class="delivery-grid">
+      <div class="delivery-step">
+        <span class="num">01.</span>
+        <h3>Vous choisissez</h3>
+        <p>Sélectionnez vos produits dans le catalogue ci-dessous, ajustez les quantités, ajoutez à votre panier.</p>
+      </div>
+      <div class="delivery-step">
+        <span class="num">02.</span>
+        <h3>On confirme</h3>
+        <p>Renseignez vos coordonnées et l'adresse de livraison. On vous rappelle dans les 30 minutes pour confirmer.</p>
+      </div>
+      <div class="delivery-step">
+        <span class="num">03.</span>
+        <h3>On livre</h3>
+        <p>Livraison gratuite dès 30&#8239;€, sinon 4&#8239;€. Paiement en espèces, carte ou virement à la livraison.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalog-section">
+    <div class="catalog-section-header">
+      <div class="feature-eyebrow">— Composez votre commande —</div>
+      <h2>Notre catalogue</h2>
+    </div>
+
+    <div class="category-tabs" id="categoryTabs">
+      <!-- Tabs rendered by JS -->
+    </div>
+
+    <div class="catalog-layout">
+      <div class="product-grid" id="productGrid">
+        <!-- Products rendered by JS -->
+      </div>
+
+      <aside class="cart-sidebar">
+        <h3>Mon panier <span class="cart-count" id="cartCount">0 article</span></h3>
+        <div id="cartContent">
+          <div class="cart-empty">Votre panier est vide.<br/>Ajoutez quelques produits pour commencer.</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="order-form-wrap" id="checkoutSection">
+    <form class="order-form" onsubmit="handleOrder(event)">
+      <div class="feature-eyebrow">— Finaliser la commande —</div>
+      <h2>Vos coordonnées</h2>
+      <p>On vous rappelle dans les 30 minutes pour confirmer la livraison.</p>
+
+      <div class="order-summary-box" id="orderSummaryBox" style="display:none;">
+        <h4>Récapitulatif de votre commande</h4>
+        <ul class="order-summary-list" id="orderSummaryList"></ul>
+        <div class="order-summary-total">
+          <span>Total</span>
+          <span class="price" id="orderSummaryTotal">0,00 €</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Prénom & nom *</label>
+          <input type="text" required placeholder="Jean Martin" />
+        </div>
+        <div class="form-field">
+          <label>Téléphone *</label>
+          <input type="tel" required placeholder="06 12 34 56 78" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field full">
+          <label>Adresse de livraison *</label>
+          <input type="text" required placeholder="3 rue des Tilleuls, 26000 Le Bourg" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Créneau souhaité *</label>
+          <select required>
+            <option value="">— Choisir —</option>
+            <option>Dès que possible</option>
+            <option>Midi · 11h30 — 13h30</option>
+            <option>Après-midi · 14h — 17h</option>
+            <option>Soir · 18h30 — 21h30</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Mode de paiement</label>
+          <select>
+            <option>À la livraison — espèces</option>
+            <option>À la livraison — carte</option>
+            <option>Virement bancaire</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field full">
+          <label>Précisions (digicode, étage, demande particulière…)</label>
+          <textarea placeholder="Ex : digicode 4567, 2ème étage à droite…"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="form-submit" id="checkoutBtn" disabled>Ajoutez des produits pour commander</button>
+    </form>
+  </section>
+
+</main>
+
+<!-- ====================== FOOTER ====================== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>Le Clos du Bourg</h3>
+      <p>Bar · Restaurant · Épicerie · Livraison<br/>Au cœur du village depuis 1923.</p>
+    </div>
+    <div>
+      <h4>Adresse</h4>
+      <ul>
+        <li>Place de l'Église</li>
+        <li>26000 Le Bourg</li>
+        <li>04 75 00 00 00</li>
+        <li>contact@leclosdubourg.fr</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Horaires</h4>
+      <ul>
+        <li class="day"><span>Mar — Ven</span><span>7h — 22h</span></li>
+        <li class="day"><span>Samedi</span><span>8h — 23h</span></li>
+        <li class="day"><span>Dimanche</span><span>9h — 14h</span></li>
+        <li class="day"><span>Lundi</span><span>fermé</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <ul>
+        <li><button class="footer-link" onclick="showPage('epicerie')">L'épicerie</button></li>
+        <li><button class="footer-link" onclick="showPage('restaurant')">Le restaurant</button></li>
+        <li><button class="footer-link" onclick="showPage('animation')">Animations</button></li>
+        <li><button class="footer-link" onclick="showPage('commande')">Commander</button></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Le Clos du Bourg — Tous droits réservés</div>
+    <div>Mentions légales · Confidentialité</div>
+  </div>
+</footer>
+
+<!-- ====================== MODAL RÉSERVATION ÉVÉNEMENT ====================== -->
+<div class="modal-backdrop" id="eventModal">
+  <div class="modal" role="dialog">
+    <button class="modal-close" onclick="closeEventModal()" aria-label="Fermer">×</button>
+    <div class="feature-eyebrow">— Réserver pour cet événement —</div>
+    <h2>Confirmer ma place</h2>
+
+    <div class="modal-event-summary">
+      <div class="ev-name" id="modalEventName">—</div>
+      <div class="ev-date" id="modalEventDate">—</div>
+    </div>
+
+    <form class="light-form" id="eventReservationForm" onsubmit="handleEventReservation(event)">
+      <div class="form-row">
+        <div class="form-field">
+          <label>Prénom & nom *</label>
+          <input type="text" required placeholder="Jean Martin" />
+        </div>
+        <div class="form-field">
+          <label>Téléphone *</label>
+          <input type="tel" required placeholder="06 12 34 56 78" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>E-mail *</label>
+          <input type="email" required placeholder="jean@exemple.fr" />
+        </div>
+        <div class="form-field">
+          <label>Nombre de personnes *</label>
+          <select required>
+            <option value="">— Choisir —</option>
+            <option>1</option><option>2</option><option>3</option>
+            <option>4</option><option>5</option><option>6</option>
+            <option>7</option><option>8</option>
+            <option>Plus de 8</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field full">
+          <label>Message (optionnel)</label>
+          <textarea placeholder="Une demande particulière&#8239;?"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="form-submit" style="background: var(--orange);">Réserver</button>
+    </form>
+  </div>
+</div>
+
+<!-- ====================== TOAST ====================== -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ============ DATA ============
+  const PRODUCTS = {
+    restaurant: {
+      label: 'Restaurant',
+      items: [
+        { id: 'r1', name: 'Velouté de potimarron', desc: 'huile de noisette, copeaux de comté', price: 9.00, img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&q=80' },
+        { id: 'r2', name: 'Œuf parfait', desc: 'champignons des bois, lard fumé', price: 12.00, img: 'https://images.unsplash.com/photo-1606756790138-261d2b21cd75?w=600&q=80' },
+        { id: 'r3', name: 'Terrine maison', desc: 'pickles de saison, pain de campagne', price: 11.00, img: 'https://images.unsplash.com/photo-1542528180-a1208c5169a5?w=600&q=80' },
+        { id: 'r4', name: 'Bœuf de la Ferme du Plateau', desc: 'jus court, pommes grenailles fumées', price: 26.00, img: 'https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=600&q=80' },
+        { id: 'r5', name: 'Filet de truite', desc: 'beurre noisette aux câpres, poireaux braisés', price: 23.00, img: 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&q=80' },
+        { id: 'r6', name: 'Risotto de petit épeautre', desc: 'courges, sauge, parmesan vieux', price: 19.00, img: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=600&q=80' },
+        { id: 'r7', name: 'Tarte du jour', desc: 'fruits de saison, crème fraîche d\'Étrez', price: 8.00, img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=80' },
+        { id: 'r8', name: 'Île flottante', desc: 'caramel fleur de sel, amandes effilées', price: 8.00, img: 'https://images.unsplash.com/photo-1488900128323-21503983a07e?w=600&q=80' },
+        { id: 'r9', name: 'Le menu du Clos', desc: 'entrée + plat + fromage + dessert', price: 42.00, img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80' },
+      ]
+    },
+    epicerie: {
+      label: 'Épicerie',
+      items: [
+        { id: 'e1', name: 'Pain au levain', desc: 'cuisson du jour, 500g', price: 4.50, img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80' },
+        { id: 'e2', name: 'Baguette tradition', desc: 'farine T65, levain naturel', price: 1.30, img: 'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=600&q=80' },
+        { id: 'e3', name: 'Beurre baratté', desc: 'demi-sel, baratte bois, 250g', price: 4.80, img: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=600&q=80' },
+        { id: 'e4', name: 'Œufs plein air', desc: 'boîte de 6, ferme du Plateau', price: 3.60, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=600&q=80' },
+        { id: 'e5', name: 'Camembert fermier', desc: 'lait cru, affinage 21 jours', price: 6.50, img: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=600&q=80' },
+        { id: 'e6', name: 'Comté 18 mois', desc: 'à la coupe, 200g', price: 7.20, img: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=600&q=80' },
+        { id: 'e7', name: 'Saucisson sec', desc: 'pur porc, séchage long', price: 8.90, img: 'https://images.unsplash.com/photo-1542528180-a1208c5169a5?w=600&q=80' },
+        { id: 'e8', name: 'Panier de légumes', desc: 'maraîchage local, pour 2-3 jours', price: 12.00, img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80' },
+        { id: 'e9', name: 'Confiture maison', desc: 'fruits de saison, pot 320g', price: 6.50, img: 'https://images.unsplash.com/photo-1597528662465-55ece5734101?w=600&q=80' },
+        { id: 'e10', name: 'Miel toutes fleurs', desc: 'ruchers du Coteau, 500g', price: 9.80, img: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&q=80' },
+      ]
+    },
+    cave: {
+      label: 'Cave & Vins',
+      items: [
+        { id: 'c1', name: 'Domaine Verchère rouge', desc: 'Côtes du Rhône, 75cl', price: 12.00, img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80' },
+        { id: 'c2', name: 'Domaine Verchère blanc', desc: 'cuvée fraîcheur, 75cl', price: 13.00, img: 'https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=600&q=80' },
+        { id: 'c3', name: 'Champagne brut', desc: 'maison familiale, 75cl', price: 32.00, img: 'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=600&q=80' },
+        { id: 'c4', name: 'Bière artisanale IPA', desc: 'brasserie locale, 33cl', price: 4.50, img: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=600&q=80' },
+        { id: 'c5', name: 'Cidre brut fermier', desc: 'pommes anciennes, 75cl', price: 8.00, img: 'https://images.unsplash.com/photo-1601225998165-b3666b3b46e5?w=600&q=80' },
+        { id: 'c6', name: 'Pastis maison', desc: 'distillation artisanale, 50cl', price: 18.00, img: 'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&q=80' },
+      ]
+    },
+    apero: {
+      label: 'Apéros & Planches',
+      items: [
+        { id: 'a1', name: 'Planche charcuterie', desc: 'sélection maison, pour 2', price: 16.00, img: 'https://images.unsplash.com/photo-1542528180-a1208c5169a5?w=600&q=80' },
+        { id: 'a2', name: 'Planche fromages', desc: '5 fromages, confit & noix, pour 2', price: 18.00, img: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=600&q=80' },
+        { id: 'a3', name: 'Planche mixte', desc: 'charcuterie + fromages, pour 2-3', price: 24.00, img: 'https://images.unsplash.com/photo-1547005192-29bb7374dd3a?w=600&q=80' },
+        { id: 'a4', name: 'Tapenade & croûtons', desc: 'olive noire, pain grillé', price: 6.00, img: 'https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=600&q=80' },
+        { id: 'a5', name: 'Olives marinées', desc: 'huile d\'olive, herbes de Provence', price: 5.00, img: 'https://images.unsplash.com/photo-1593001872095-7d5b3868fb1d?w=600&q=80' },
+        { id: 'a6', name: 'Houmous maison', desc: 'pois chiches, tahini, pain pita', price: 7.00, img: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=600&q=80' },
+      ]
+    }
+  };
+
+  const EVENTS = [
+    { id: 'ev1', name: 'Trio Jazz Manouche', date: '07 mai · 21h00', dateLong: 'Vendredi 7 mai 2026 · 21h00', tag: 'Concert', meta: 'Au comptoir', desc: 'Les frères Tournier reviennent pour une soirée swing autour du zinc. Sans réservation, dans la limite des places assises.', img: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=800&q=80' },
+    { id: 'ev2', name: 'Soirée vigneron · Domaine Verchère', date: '14 mai · 19h30', dateLong: 'Vendredi 14 mai 2026 · 19h30', tag: 'Dégustation', meta: 'Sur réservation', desc: 'Cinq cuvées commentées par Pierre Verchère, accompagnées d\'une planche du terroir. Réservation conseillée, places limitées à vingt-quatre couverts.', img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80' },
+    { id: 'ev3', name: 'Marché nocturne du Bourg', date: '21 mai · 18h00', dateLong: 'Vendredi 21 mai 2026 · 18h00', tag: 'Marché', meta: 'Place du village', desc: 'Une vingtaine de producteurs sur la place, grillades au feu de bois, buvette en terrasse jusqu\'à minuit. Concert acoustique à partir de 21h.', img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80' },
+    { id: 'ev4', name: 'Bal populaire de printemps', date: '28 mai · 20h00', dateLong: 'Vendredi 28 mai 2026 · 20h00', tag: 'Soirée', meta: 'Sur réservation', desc: 'Orchestre, accordéon, paëlla géante au feu de bois et bal sur la place jusqu\'au bout de la nuit. Tradition oblige.', img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80' },
+    { id: 'ev5', name: 'Atelier "Faire son pain au levain"', date: '04 juin · 14h00', dateLong: 'Samedi 4 juin 2026 · 14h00', tag: 'Atelier', meta: '8 places', desc: 'Avec le boulanger Léon, en petit groupe. Repartez avec votre levain et deux pains. Goûter inclus, durée 3 heures.', img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80' },
+    { id: 'ev6', name: 'Chansons françaises · Léa Dumont', date: '11 juin · 20h30', dateLong: 'Vendredi 11 juin 2026 · 20h30', tag: 'Concert', meta: 'Repas + concert', desc: 'Voix et guitare en terrasse, du Brel à Camille. Repas + concert sur réservation, formule à 35 €.', img: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80' },
+  ];
+
+  // ============ STATE ============
+  let cart = {}; // { productId: quantity }
+  let activeCategory = 'restaurant';
+  let activeEventId = null;
+
+  // ============ NAVIGATION ============
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    const link = document.querySelector(`.nav-link[data-page="${id}"]`);
+    if (link) link.classList.add('active');
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    updateHeaderTransparency();
+
+    document.getElementById('mainNav').classList.remove('open');
+    document.getElementById('menuToggle').classList.remove('open');
+  }
+
+  const header = document.getElementById('siteHeader');
+  function updateHeaderTransparency() {
+    const accueilActive = document.getElementById('page-accueil').classList.contains('active');
+    if (accueilActive && window.scrollY < 80) {
+      header.classList.add('transparent');
+    } else {
+      header.classList.remove('transparent');
+    }
+  }
+  window.addEventListener('scroll', updateHeaderTransparency);
+
+  // Mobile menu
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('mainNav');
+  toggle.addEventListener('click', () => {
+    nav.classList.toggle('open');
+    toggle.classList.toggle('open');
+  });
+
+  // ============ TOAST ============
+  let toastTimeout;
+  function showToast(msg, success = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.toggle('success', success);
+    t.classList.add('show');
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // ============ CATALOG / PRODUCTS ============
+  function renderCategoryTabs() {
+    const tabs = document.getElementById('categoryTabs');
+    tabs.innerHTML = Object.keys(PRODUCTS).map(key => `
+      <button class="category-tab ${key === activeCategory ? 'active' : ''}" data-cat="${key}" onclick="switchCategory('${key}')">
+        ${PRODUCTS[key].label}
+      </button>
+    `).join('');
+  }
+
+  function switchCategory(key) {
+    activeCategory = key;
+    renderCategoryTabs();
+    renderProducts();
+  }
+
+  function findProduct(id) {
+    for (const cat of Object.values(PRODUCTS)) {
+      const p = cat.items.find(p => p.id === id);
+      if (p) return p;
+    }
+    return null;
+  }
+
+  function renderProducts() {
+    const grid = document.getElementById('productGrid');
+    const items = PRODUCTS[activeCategory].items;
+    grid.innerHTML = items.map(p => {
+      const qty = cart[p.id] || 0;
+      const controls = qty > 0
+        ? `<div class="qty-controls">
+             <button class="qty-btn" onclick="decrement('${p.id}')" aria-label="Retirer">−</button>
+             <span class="qty-display">${qty}</span>
+             <button class="qty-btn" onclick="increment('${p.id}')" aria-label="Ajouter">+</button>
+           </div>`
+        : `<button class="add-btn" onclick="increment('${p.id}')">Ajouter</button>`;
+      return `
+        <div class="product-card">
+          <div class="product-img" style="background-image: url('${p.img}');"></div>
+          <div class="product-body">
+            <h3>${p.name}</h3>
+            <p class="desc">${p.desc}</p>
+            <div class="product-footer">
+              <div class="product-price">${p.price.toFixed(2).replace('.', ',')}<small>€</small></div>
+              ${controls}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function increment(id) {
+    cart[id] = (cart[id] || 0) + 1;
+    if (cart[id] === 1) {
+      const p = findProduct(id);
+      showToast(`${p.name} ajouté au panier`, true);
+    }
+    renderProducts();
+    renderCart();
+  }
+
+  function decrement(id) {
+    if (!cart[id]) return;
+    cart[id]--;
+    if (cart[id] <= 0) delete cart[id];
+    renderProducts();
+    renderCart();
+  }
+
+  function removeFromCart(id) {
+    delete cart[id];
+    renderProducts();
+    renderCart();
+  }
+
+  function getCartItems() {
+    return Object.entries(cart).map(([id, qty]) => {
+      const p = findProduct(id);
+      return p ? { ...p, qty, lineTotal: p.price * qty } : null;
+    }).filter(Boolean);
+  }
+
+  function getCartTotal() {
+    return getCartItems().reduce((s, i) => s + i.lineTotal, 0);
+  }
+
+  function getCartCount() {
+    return Object.values(cart).reduce((s, q) => s + q, 0);
+  }
+
+  function formatEuro(n) {
+    return n.toFixed(2).replace('.', ',') + ' €';
+  }
+
+  function renderCart() {
+    const items = getCartItems();
+    const total = getCartTotal();
+    const count = getCartCount();
+    const subtotal = total;
+    const delivery = total >= 30 ? 0 : (total > 0 ? 4 : 0);
+    const grandTotal = subtotal + delivery;
+
+    // Cart count label
+    document.getElementById('cartCount').textContent =
+      count === 0 ? '0 article' : `${count} article${count > 1 ? 's' : ''}`;
+
+    // Header badge
+    const badge = document.getElementById('cartBadge');
+    document.getElementById('cartBadgeCount').textContent = count;
+    badge.classList.toggle('empty', count === 0);
+
+    // Cart sidebar content
+    const content = document.getElementById('cartContent');
+    if (items.length === 0) {
+      content.innerHTML = `<div class="cart-empty">Votre panier est vide.<br/>Ajoutez quelques produits pour commencer.</div>`;
+    } else {
+      content.innerHTML = `
+        <div class="cart-items">
+          ${items.map(i => `
+            <div class="cart-item">
+              <div>
+                <div class="cart-item-name">${i.name}</div>
+                <div class="cart-item-meta">${i.qty} × ${formatEuro(i.price)}</div>
+              </div>
+              <div class="cart-item-actions">
+                <div class="cart-item-price">${formatEuro(i.lineTotal)}</div>
+                <button class="cart-item-remove" onclick="removeFromCart('${i.id}')">Retirer</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="cart-totals">
+          <div class="cart-row">
+            <span>Sous-total</span>
+            <span>${formatEuro(subtotal)}</span>
+          </div>
+          <div class="cart-row">
+            <span>Livraison</span>
+            <span>${delivery === 0 ? 'Offerte' : formatEuro(delivery)}</span>
+          </div>
+          <div class="cart-row grand">
+            <span>Total</span>
+            <span class="price">${formatEuro(grandTotal)}</span>
+          </div>
+          <button class="cart-checkout-btn" onclick="scrollToCheckout()">Passer la commande</button>
+        </div>
+      `;
+    }
+
+    // Checkout form
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const summaryBox = document.getElementById('orderSummaryBox');
+    if (count === 0) {
+      checkoutBtn.disabled = true;
+      checkoutBtn.textContent = 'Ajoutez des produits pour commander';
+      summaryBox.style.display = 'none';
+    } else {
+      checkoutBtn.disabled = false;
+      checkoutBtn.textContent = `Confirmer la commande — ${formatEuro(grandTotal)}`;
+      summaryBox.style.display = 'block';
+      document.getElementById('orderSummaryList').innerHTML = items.map(i => `
+        <li>
+          <span><span class="qty">${i.qty}×</span>${i.name}</span>
+          <span class="price-col">${formatEuro(i.lineTotal)}</span>
+        </li>
+      `).join('') + `
+        <li>
+          <span>Livraison</span>
+          <span class="price-col">${delivery === 0 ? 'Offerte' : formatEuro(delivery)}</span>
+        </li>
+      `;
+      document.getElementById('orderSummaryTotal').textContent = formatEuro(grandTotal);
+    }
+  }
+
+  function scrollToCheckout() {
+    const target = document.getElementById('checkoutSection');
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ============ EVENTS ============
+  function renderEvents() {
+    const list = document.getElementById('eventsList');
+    list.innerHTML = EVENTS.map(ev => `
+      <div class="event-card">
+        <div class="event-card-img" style="background-image: url('${ev.img}');"></div>
+        <div class="event-card-body">
+          <div class="event-card-meta">
+            <span class="date">${ev.date}</span>
+            <span>${ev.meta}</span>
+          </div>
+          <h3>${ev.name}</h3>
+          <p>${ev.desc}</p>
+          <span class="event-card-tag">${ev.tag}</span>
+        </div>
+        <div class="event-card-cta">
+          <button class="event-reserve-btn" onclick="openEventModal('${ev.id}')">Réserver</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function openEventModal(id) {
+    const ev = EVENTS.find(e => e.id === id);
+    if (!ev) return;
+    activeEventId = id;
+    document.getElementById('modalEventName').textContent = ev.name;
+    document.getElementById('modalEventDate').textContent = ev.dateLong;
+    document.getElementById('eventModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEventModal() {
+    document.getElementById('eventModal').classList.remove('open');
+    document.body.style.overflow = '';
+    activeEventId = null;
+  }
+
+  // Close modal on backdrop click or Escape
+  document.getElementById('eventModal').addEventListener('click', e => {
+    if (e.target.id === 'eventModal') closeEventModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeEventModal();
+  });
+
+  // ============ FORM HANDLERS ============
+  function handleOrder(e) {
+    e.preventDefault();
+    if (getCartCount() === 0) return;
+    const btn = e.target.querySelector('.form-submit');
+    const orig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '✓ Commande envoyée — on vous rappelle';
+    btn.style.background = 'var(--green)';
+    setTimeout(() => {
+      cart = {};
+      e.target.reset();
+      renderProducts();
+      renderCart();
+      btn.textContent = 'Ajoutez des produits pour commander';
+      btn.style.background = '';
+      btn.disabled = true;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast('Votre commande a bien été envoyée', true);
+    }, 2500);
+  }
+
+  function handleReservation(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    const orig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '✓ Demande envoyée — confirmation par téléphone';
+    btn.style.background = 'var(--green)';
+    setTimeout(() => {
+      e.target.reset();
+      btn.textContent = orig;
+      btn.style.background = '';
+      btn.disabled = false;
+      showToast('Réservation envoyée — nous vous rappelons dans la journée', true);
+    }, 2500);
+  }
+
+  function handleEventReservation(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    const orig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '✓ Réservation envoyée';
+    btn.style.background = 'var(--green)';
+    setTimeout(() => {
+      e.target.reset();
+      btn.textContent = orig;
+      btn.style.background = 'var(--orange)';
+      btn.disabled = false;
+      closeEventModal();
+      showToast('Votre place est réservée — confirmation par e-mail', true);
+    }, 1800);
+  }
+
+  // ============ INIT ============
+  // Set min date for restaurant reservation
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('resDate').setAttribute('min', today);
+
+  renderCategoryTabs();
+  renderProducts();
+  renderCart();
+  renderEvents();
+  updateHeaderTransparency();
+</script>
+
+</body>
+</html>
