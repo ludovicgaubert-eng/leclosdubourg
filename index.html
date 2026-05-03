@@ -955,6 +955,44 @@
     background: var(--orange);
   }
 
+  .category-sub-tabs {
+    display: flex;
+    gap: 1.8rem;
+    margin-top: -2rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1px;
+  }
+
+  .category-sub-tab {
+    padding: 0.75rem 0;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s;
+    white-space: nowrap;
+  }
+
+  .category-sub-tab:hover { color: var(--ink); }
+  .category-sub-tab.active { color: var(--orange); }
+  .category-sub-tab.active::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -1px;
+    width: 100%;
+    height: 2px;
+    background: var(--orange);
+  }
+
   .catalog-layout {
     display: grid;
     grid-template-columns: 1fr 380px;
@@ -2077,7 +2115,10 @@
     </div>
 
     <div class="category-tabs" id="categoryTabs">
-      <!-- Tabs rendered by JS -->
+      <!-- Onglets principaux générés par JS -->
+    </div>
+    <div class="category-sub-tabs" id="categorySubTabs" style="display:none;">
+      <!-- Sous-onglets générés par JS -->
     </div>
 
     <div class="catalog-layout">
@@ -2258,8 +2299,8 @@
 <script>
   // ============ DATA ============
   const PRODUCTS = {
-    restaurant: {
-      label: 'Restaurant',
+    plats_chef: {
+      label: 'Les Plats du Chef',
       items: [
         { id: 'r1', name: 'Velouté de potimarron', desc: 'huile de noisette, copeaux de comté', price: 9.00, img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&q=80' },
         { id: 'r2', name: 'Œuf parfait', desc: 'champignons des bois, lard fumé', price: 12.00, img: 'https://images.unsplash.com/photo-1606756790138-261d2b21cd75?w=600&q=80' },
@@ -2272,42 +2313,112 @@
         { id: 'r9', name: 'Le menu du Clos', desc: 'entrée + plat + fromage + dessert', price: 42.00, img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80' },
       ]
     },
-    epicerie: {
-      label: 'Épicerie',
-      items: [
-        { id: 'e1', name: 'Pain au levain', desc: 'cuisson du jour, 500g', price: 4.50, img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80' },
-        { id: 'e2', name: 'Baguette tradition', desc: 'farine T65, levain naturel', price: 1.30, img: 'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=600&q=80' },
-        { id: 'e3', name: 'Beurre baratté', desc: 'demi-sel, baratte bois, 250g', price: 4.80, img: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=600&q=80' },
-        { id: 'e4', name: 'Œufs plein air', desc: 'boîte de 6, ferme du Plateau', price: 3.60, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=600&q=80' },
-        { id: 'e5', name: 'Camembert fermier', desc: 'lait cru, affinage 21 jours', price: 6.50, img: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=600&q=80' },
-        { id: 'e6', name: 'Comté 18 mois', desc: 'à la coupe, 200g', price: 7.20, img: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=600&q=80' },
-        { id: 'e7', name: 'Saucisson sec', desc: 'pur porc, séchage long', price: 8.90, img: 'https://images.unsplash.com/photo-1542528180-a1208c5169a5?w=600&q=80' },
-        { id: 'e8', name: 'Panier de légumes', desc: 'maraîchage local, pour 2-3 jours', price: 12.00, img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80' },
-        { id: 'e9', name: 'Confiture maison', desc: 'fruits de saison, pot 320g', price: 6.50, img: 'https://images.unsplash.com/photo-1597528662465-55ece5734101?w=600&q=80' },
-        { id: 'e10', name: 'Miel toutes fleurs', desc: 'ruchers du Coteau, 500g', price: 9.80, img: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&q=80' },
-      ]
+    produits_frais: {
+      label: 'Produits frais',
+      sub: {
+        fruits_legumes: {
+          label: 'Fruits & Légumes',
+          items: [
+            { id: 'fl1', name: 'Panier de légumes', desc: 'maraîchage local, pour 2-3 jours', price: 12.00, img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80' },
+          ]
+        },
+        viandes_poissons: {
+          label: 'Viandes & Poissons',
+          items: []
+        },
+        charcuterie: {
+          label: 'Charcuterie',
+          items: [
+            { id: 'ch1', name: 'Saucisson sec', desc: 'pur porc, séchage long', price: 8.90, img: 'https://images.unsplash.com/photo-1542528180-a1208c5169a5?w=600&q=80' },
+            { id: 'ch2', name: 'Planche charcuterie', desc: 'sélection maison, pour 2', price: 16.00, img: 'https://images.unsplash.com/photo-1547005192-29bb7374dd3a?w=600&q=80' },
+          ]
+        },
+        fromages: {
+          label: 'Fromages, Crémerie & Œufs',
+          items: [
+            { id: 'fr1', name: 'Camembert fermier', desc: 'lait cru, affinage 21 jours', price: 6.50, img: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=600&q=80' },
+            { id: 'fr2', name: 'Comté 18 mois', desc: 'à la coupe, 200g', price: 7.20, img: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=600&q=80' },
+            { id: 'fr3', name: 'Planche fromages', desc: '5 fromages, confit & noix, pour 2', price: 18.00, img: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=600&q=80' },
+            { id: 'fr4', name: 'Beurre baratté', desc: 'demi-sel, baratte bois, 250g', price: 4.80, img: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=600&q=80' },
+            { id: 'fr5', name: 'Œufs plein air', desc: 'boîte de 6, ferme du Plateau', price: 3.60, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=600&q=80' },
+          ]
+        },
+        yaourts: {
+          label: 'Yaourts & Desserts',
+          items: []
+        },
+        pains: {
+          label: 'Pains & Pâtisseries',
+          items: [
+            { id: 'pa1', name: 'Pain au levain', desc: 'cuisson du jour, 500g', price: 4.50, img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80' },
+            { id: 'pa2', name: 'Baguette tradition', desc: 'farine T65, levain naturel', price: 1.30, img: 'https://images.unsplash.com/photo-1568471173242-461f0a730452?w=600&q=80' },
+          ]
+        },
+      }
     },
-    cave: {
-      label: 'Cave & Vins',
-      items: [
-        { id: 'c1', name: 'Domaine Verchère rouge', desc: 'Côtes du Rhône, 75cl', price: 12.00, img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80' },
-        { id: 'c2', name: 'Domaine Verchère blanc', desc: 'cuvée fraîcheur, 75cl', price: 13.00, img: 'https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=600&q=80' },
-        { id: 'c3', name: 'Champagne brut', desc: 'maison familiale, 75cl', price: 32.00, img: 'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=600&q=80' },
-        { id: 'c4', name: 'Bière artisanale IPA', desc: 'brasserie locale, 33cl', price: 4.50, img: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=600&q=80' },
-        { id: 'c5', name: 'Cidre brut fermier', desc: 'pommes anciennes, 75cl', price: 8.00, img: 'https://images.unsplash.com/photo-1601225998165-b3666b3b46e5?w=600&q=80' },
-        { id: 'c6', name: 'Pastis maison', desc: 'distillation artisanale, 50cl', price: 18.00, img: 'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&q=80' },
-      ]
+    epicerie_boissons: {
+      label: 'Épicerie & boissons',
+      sub: {
+        epicerie_salee: {
+          label: 'Épicerie Salée',
+          items: [
+            { id: 'es1', name: 'Tapenade & croûtons', desc: 'olive noire, pain grillé', price: 6.00, img: 'https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=600&q=80' },
+            { id: 'es2', name: 'Olives marinées', desc: 'huile d\'olive, herbes de Provence', price: 5.00, img: 'https://images.unsplash.com/photo-1593001872095-7d5b3868fb1d?w=600&q=80' },
+            { id: 'es3', name: 'Houmous maison', desc: 'pois chiches, tahini, pain pita', price: 7.00, img: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=600&q=80' },
+          ]
+        },
+        epicerie_sucree: {
+          label: 'Épicerie Sucrée',
+          items: [
+            { id: 'eu1', name: 'Confiture maison', desc: 'fruits de saison, pot 320g', price: 6.50, img: 'https://images.unsplash.com/photo-1597528662465-55ece5734101?w=600&q=80' },
+            { id: 'eu2', name: 'Miel toutes fleurs', desc: 'ruchers du Coteau, 500g', price: 9.80, img: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&q=80' },
+          ]
+        },
+        boissons: {
+          label: 'Eaux, Sodas, Jus',
+          items: []
+        },
+        vins_alcools: {
+          label: 'Vins & alcools',
+          items: [
+            { id: 'v1', name: 'Domaine Verchère rouge', desc: 'Côtes du Rhône, 75cl', price: 12.00, img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80' },
+            { id: 'v2', name: 'Domaine Verchère blanc', desc: 'cuvée fraîcheur, 75cl', price: 13.00, img: 'https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=600&q=80' },
+            { id: 'v3', name: 'Champagne brut', desc: 'maison familiale, 75cl', price: 32.00, img: 'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=600&q=80' },
+            { id: 'v4', name: 'Bière artisanale IPA', desc: 'brasserie locale, 33cl', price: 4.50, img: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=600&q=80' },
+            { id: 'v5', name: 'Cidre brut fermier', desc: 'pommes anciennes, 75cl', price: 8.00, img: 'https://images.unsplash.com/photo-1601225998165-b3666b3b46e5?w=600&q=80' },
+            { id: 'v6', name: 'Pastis maison', desc: 'distillation artisanale, 50cl', price: 18.00, img: 'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=600&q=80' },
+          ]
+        },
+      }
     },
-    apero: {
-      label: 'Apéros & Planches',
-      items: [
-        { id: 'a1', name: 'Planche charcuterie', desc: 'sélection maison, pour 2', price: 16.00, img: 'https://images.unsplash.com/photo-1542528180-a1208c5169a5?w=600&q=80' },
-        { id: 'a2', name: 'Planche fromages', desc: '5 fromages, confit & noix, pour 2', price: 18.00, img: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=600&q=80' },
-        { id: 'a3', name: 'Planche mixte', desc: 'charcuterie + fromages, pour 2-3', price: 24.00, img: 'https://images.unsplash.com/photo-1547005192-29bb7374dd3a?w=600&q=80' },
-        { id: 'a4', name: 'Tapenade & croûtons', desc: 'olive noire, pain grillé', price: 6.00, img: 'https://images.unsplash.com/photo-1505253758473-96b7015fcd40?w=600&q=80' },
-        { id: 'a5', name: 'Olives marinées', desc: 'huile d\'olive, herbes de Provence', price: 5.00, img: 'https://images.unsplash.com/photo-1593001872095-7d5b3868fb1d?w=600&q=80' },
-        { id: 'a6', name: 'Houmous maison', desc: 'pois chiches, tahini, pain pita', price: 7.00, img: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=600&q=80' },
-      ]
+    surgeles: {
+      label: 'Surgelés',
+      items: []
+    },
+    hygiene: {
+      label: 'Hygiène & beauté',
+      items: []
+    },
+    maison: {
+      label: 'Maison',
+      items: []
+    },
+    univers: {
+      label: 'Univers spécifiques',
+      sub: {
+        bebe: {
+          label: 'Bébé',
+          items: []
+        },
+        animaux: {
+          label: 'Animaux',
+          items: []
+        },
+        bio: {
+          label: 'Bio',
+          items: []
+        },
+      }
     }
   };
 
@@ -2321,8 +2432,9 @@
   ];
 
   // ============ STATE ============
-  let cart = {}; // { productId: quantity }
-  let activeCategory = 'restaurant';
+  let cart = {};
+  let activeMainCategory = 'plats_chef';
+  let activeSubCategory = null;
   let activeEventId = null;
 
   // ============ NAVIGATION ============
@@ -2372,32 +2484,74 @@
   }
 
   // ============ CATALOG / PRODUCTS ============
+  function getActiveItems() {
+    const main = PRODUCTS[activeMainCategory];
+    if (main.sub) {
+      const sub = main.sub[activeSubCategory];
+      return sub ? sub.items : [];
+    }
+    return main.items;
+  }
+
   function renderCategoryTabs() {
     const tabs = document.getElementById('categoryTabs');
     tabs.innerHTML = Object.keys(PRODUCTS).map(key => `
-      <button class="category-tab ${key === activeCategory ? 'active' : ''}" data-cat="${key}" onclick="switchCategory('${key}')">
+      <button class="category-tab ${key === activeMainCategory ? 'active' : ''}" onclick="switchCategory('${key}')">
         ${PRODUCTS[key].label}
       </button>
     `).join('');
+
+    const subTabs = document.getElementById('categorySubTabs');
+    const main = PRODUCTS[activeMainCategory];
+    if (main.sub) {
+      subTabs.innerHTML = Object.keys(main.sub).map(key => `
+        <button class="category-sub-tab ${key === activeSubCategory ? 'active' : ''}" onclick="switchSubCategory('${key}')">
+          ${main.sub[key].label}
+        </button>
+      `).join('');
+      subTabs.style.display = 'flex';
+    } else {
+      subTabs.innerHTML = '';
+      subTabs.style.display = 'none';
+    }
   }
 
   function switchCategory(key) {
-    activeCategory = key;
+    activeMainCategory = key;
+    const main = PRODUCTS[key];
+    activeSubCategory = main.sub ? Object.keys(main.sub)[0] : null;
+    renderCategoryTabs();
+    renderProducts();
+  }
+
+  function switchSubCategory(key) {
+    activeSubCategory = key;
     renderCategoryTabs();
     renderProducts();
   }
 
   function findProduct(id) {
-    for (const cat of Object.values(PRODUCTS)) {
-      const p = cat.items.find(p => p.id === id);
-      if (p) return p;
+    for (const main of Object.values(PRODUCTS)) {
+      if (main.sub) {
+        for (const sub of Object.values(main.sub)) {
+          const p = sub.items.find(p => p.id === id);
+          if (p) return p;
+        }
+      } else {
+        const p = main.items.find(p => p.id === id);
+        if (p) return p;
+      }
     }
     return null;
   }
 
   function renderProducts() {
     const grid = document.getElementById('productGrid');
-    const items = PRODUCTS[activeCategory].items;
+    const items = getActiveItems();
+    if (items.length === 0) {
+      grid.innerHTML = '<div class="cart-empty" style="grid-column:1/-1;padding:3rem 0;text-align:center;">Bientôt disponible — cette section est en cours de constitution.</div>';
+      return;
+    }
     grid.innerHTML = items.map(p => {
       const qty = cart[p.id] || 0;
       const controls = qty > 0
