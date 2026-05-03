@@ -772,6 +772,134 @@
     font-size: 0.95rem;
   }
 
+  /* ---- Dish pre-selection in reservation form ---- */
+  .form-section-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+
+  .form-section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .form-optional-badge {
+    font-size: 0.65rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    align-self: center;
+  }
+
+  .form-hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .dish-selection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dish-category-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--muted);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .dish-category-signature .dish-category-name { color: var(--orange); }
+
+  .dish-category-signature {
+    grid-column: 1 / -1;
+  }
+
+  .dish-signature-badge {
+    font-size: 0.6rem;
+    color: var(--orange);
+    border: 1px solid currentColor;
+    padding: 0.1rem 0.5rem;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .dish-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 2rem;
+  }
+
+  .dish-category-signature .dish-options-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dish-option {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 0.38rem 0;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+
+  .dish-option input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    accent-color: var(--orange);
+    cursor: pointer;
+    margin-top: 2px;
+  }
+
+  .dish-option-name { flex: 1; }
+
+  .dish-option-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    color: var(--orange);
+    font-weight: 500;
+    white-space: nowrap;
+    margin-left: 0.3rem;
+  }
+
+  @media (max-width: 700px) {
+    .dish-selection { grid-template-columns: 1fr; }
+    .dish-category-signature { grid-column: auto; }
+    .dish-options-grid { grid-template-columns: 1fr; }
+    .dish-category-signature .dish-options-grid { grid-template-columns: 1fr; }
+  }
+
   /* ============ ANIMATION EVENTS ============ */
   .events-list-section {
     padding: 7rem 3rem;
@@ -2087,6 +2215,59 @@
             <label>E-mail</label>
             <input type="email" id="resEmail" placeholder="jean@exemple.fr" />
           </div>
+        </div>
+
+        <div class="form-section-divider">Pré-sélection des plats <span class="form-optional-badge">Optionnel</span></div>
+        <p class="form-hint">Anticipez votre repas en cochant vos plats. Sans engagement — la carte peut évoluer selon le marché.</p>
+
+        <div class="dish-selection">
+
+          <div class="dish-category">
+            <div class="dish-category-name">Entrées</div>
+            <div class="dish-options-grid">
+              <label class="dish-option"><input type="checkbox" name="plat" value="Velouté de potimarron" /><span class="dish-option-name">Velouté de potimarron</span><span class="dish-option-price">9 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Œuf parfait, champignons des bois" /><span class="dish-option-name">Œuf parfait, champignons des bois</span><span class="dish-option-price">12 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Terrine maison" /><span class="dish-option-name">Terrine maison</span><span class="dish-option-price">11 €</span></label>
+            </div>
+          </div>
+
+          <div class="dish-category">
+            <div class="dish-category-name">Plats</div>
+            <div class="dish-options-grid">
+              <label class="dish-option"><input type="checkbox" name="plat" value="Bœuf de la Ferme du Plateau" /><span class="dish-option-name">Bœuf de la Ferme du Plateau</span><span class="dish-option-price">26 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Filet de truite" /><span class="dish-option-name">Filet de truite, beurre noisette</span><span class="dish-option-price">23 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Risotto de petit épeautre" /><span class="dish-option-name">Risotto de petit épeautre</span><span class="dish-option-price">19 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Volaille fermière en cocotte" /><span class="dish-option-name">Volaille fermière en cocotte (2 pers.)</span><span class="dish-option-price">52 €</span></label>
+            </div>
+          </div>
+
+          <div class="dish-category">
+            <div class="dish-category-name">Desserts & Fromages</div>
+            <div class="dish-options-grid">
+              <label class="dish-option"><input type="checkbox" name="plat" value="Tarte du jour" /><span class="dish-option-name">Tarte du jour</span><span class="dish-option-price">8 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Île flottante" /><span class="dish-option-name">Île flottante, caramel fleur de sel</span><span class="dish-option-price">8 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Plateau de fromages affinés" /><span class="dish-option-name">Plateau de fromages affinés</span><span class="dish-option-price">12 €</span></label>
+            </div>
+          </div>
+
+          <div class="dish-category">
+            <div class="dish-category-name">Formules</div>
+            <div class="dish-options-grid">
+              <label class="dish-option"><input type="checkbox" name="plat" value="Le déjeuner du marché" /><span class="dish-option-name">Le déjeuner du marché</span><span class="dish-option-price">24 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Le menu du Clos" /><span class="dish-option-name">Le menu du Clos</span><span class="dish-option-price">42 €</span></label>
+            </div>
+          </div>
+
+          <div class="dish-category dish-category-signature">
+            <div class="dish-category-name">Plats signatures du Chef <span class="dish-signature-badge">Sur commande 48 h avant</span></div>
+            <div class="dish-options-grid">
+              <label class="dish-option"><input type="checkbox" name="plat" value="Agneau de lait entier rôti" /><span class="dish-option-name">Agneau de lait entier rôti (4-6 pers.)</span><span class="dish-option-price">140 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Côte de bœuf maturée 45 jours" /><span class="dish-option-name">Côte de bœuf maturée 45 jours (2 pers.)</span><span class="dish-option-price">72 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Pithiviers de canard confit & foie gras" /><span class="dish-option-name">Pithiviers de canard confit & foie gras (2 pers.)</span><span class="dish-option-price">58 €</span></label>
+              <label class="dish-option"><input type="checkbox" name="plat" value="Homard bleu breton" /><span class="dish-option-name">Homard bleu breton, beurre blanc</span><span class="dish-option-price">62 €</span></label>
+            </div>
+          </div>
+
         </div>
 
         <div class="form-row">
